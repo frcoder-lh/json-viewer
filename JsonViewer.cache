@@ -1,0 +1,16 @@
+CACHE MANIFEST
+#version 0.0.1
+
+CACHE:
+    index.html
+    css/main.css
+    js/main.js
+    js/jquery-3.2.0.min.js
+    js/jquery.ztree.core.min.js
+    image/favicon.ico
+    image/line_conn.gif
+    image/zTreeStandard.gif
+    image/zTreeStandard.png
+
+NETWORK:
+    *
