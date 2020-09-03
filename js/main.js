@@ -123,17 +123,23 @@ function getInJson() {
 function parseJson(inJson, outJson) {
     for (let key in inJson) {
         if (inJson instanceof Array) {
-            let item = {name: '<span class="name">[' + key + ']</span>', children: []};
-            parseJson(inJson[key], item);
-            outJson.children.push(item);
+            if (inJson[key] instanceof Object) {
+                let item = {name: '<span class="name">[' + htmlEncode(key) + ']</span>', children: []};
+                parseJson(inJson[key], item);
+                outJson.children.push(item);
+            } else if (typeof (inJson[key]) === 'string') {
+                outJson.children.push({name: '<span class="name">' + htmlEncode(key) + '</span>: "' + htmlEncode(inJson[key]) + '"'});
+            } else {
+                outJson.children.push({name: '<span class="name">' + htmlEncode(key) + '</span>: ' + htmlEncode(inJson[key])});
+            }
         } else if (inJson[key] instanceof Object) {
-            let item = {name: '<span class="name">' + key + '</span>', children: []};
+            let item = {name: '<span class="name">' + htmlEncode(key) + '</span>', children: []};
             parseJson(inJson[key], item);
             outJson.children.push(item);
-        } else if (typeof(inJson[key]) === 'string') {
-            outJson.children.push({name: '<span class="name">' + key + '</span>: "' + inJson[key] + '"'});
+        } else if (typeof (inJson[key]) === 'string') {
+            outJson.children.push({name: '<span class="name">' + htmlEncode(key) + '</span>: "' + htmlEncode(inJson[key]) + '"'});
         } else {
-            outJson.children.push({name: '<span class="name">' + key + '</span>: ' + inJson[key]});
+            outJson.children.push({name: '<span class="name">' + htmlEncode(key) + '</span>: ' + htmlEncode(inJson[key])});
         }
     }
 }
@@ -145,4 +151,12 @@ function getOutJson() {
     let outJson = {name: "JSON", children: []};
     parseJson(inJson, outJson);
     return outJson;
+}
+
+function htmlEncode(value) {
+    return $('<div/>').text(value).html();
+}
+
+function htmlDecode(value) {
+    return $('<div/>').html(value).text();
 }
