@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 0.0.3
+#version 0.0.4
 
 CACHE:
     index.html
@@ -7,8 +7,10 @@ CACHE:
     js/main.js
     js/jquery-3.2.0.min.js
     js/jquery.ztree.core.min.js
+    js/jquery.ztree.exhide.min.js
     image/favicon.ico
     image/line_conn.gif
+    image/gotoTop.png
     image/zTreeStandard.gif
     image/zTreeStandard.png
 
