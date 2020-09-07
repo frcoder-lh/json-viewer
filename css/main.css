@@ -48,6 +48,12 @@ body {
     color: #ffffff;
 }
 
+#fuzzySearch {
+    border: none;
+    outline: none;
+    padding: 2px;
+}
+
 #leftTools {
     margin-left: 10px;
 }
@@ -171,7 +177,6 @@ body {
 
 .ztree li span {
     line-height: 16px;
-    margin-right: 2px
 }
 
 .ztree li span.button {
@@ -193,6 +198,12 @@ body {
 
 .ztree span.name {
     font-weight: bolder;
+    margin-right: 2px
+}
+
+.ztree span.searchTarget {
+    color: whitesmoke;
+    background-color: darkred;
 }
 
 .ztree li span.button.switch {
