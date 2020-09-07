@@ -10,6 +10,7 @@ CACHE:
     js/jquery.ztree.exhide.min.js
     image/favicon.ico
     image/line_conn.gif
+    image/gotoTop.png
     image/zTreeStandard.gif
     image/zTreeStandard.png
 
