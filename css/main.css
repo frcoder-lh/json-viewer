@@ -350,4 +350,36 @@ ul.tmpTargetzTree {
     position: absolute
 }
 
+.modal {
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+}
 
+.modal-dialog {
+    background: #fefefe;
+    border: #333 solid 1px;
+    border-radius: 5px;
+    z-index: 11;
+    max-width: 70vw;
+    font-family: Consolas, Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+}
+
+.modal-body {
+    padding: 10px 20px;
+    word-break: break-all;
+}
+
+.modal-header {
+    padding: 12px 20px;
+    border-bottom: #eee solid 1px;
+    font-size: 20px;
+    font-weight: bolder;
+}
