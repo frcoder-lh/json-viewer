@@ -9,7 +9,6 @@ body {
     margin: 0;
     padding: 0;
     border-width: 0;
-    min-width: 700px;
 }
 
 #bar {
@@ -68,24 +67,23 @@ body {
 }
 
 #container {
-    min-height: 90vh;
     display: -webkit-flex;
     display: -moz-flex;
     display: flex;
 }
 
 #left {
-    width: 49%;
+    flex: 1;
+    overflow: auto;
 }
 
 #in {
-    width: 98%;
-    height: 100%;
+    height: 95%;
     white-space: pre-wrap;
     word-break: break-all;
     margin: 1% 1%;
     font-size: 12px;
-    font-family: Consolas, Verdana, Arial, Helvetica, AppleGothic, sans-serif
+    font-family: Consolas, Verdana, Arial, Helvetica, AppleGothic, sans-serif;
 }
 
 [contenteditable]:focus {
@@ -93,9 +91,9 @@ body {
 }
 
 #right {
+    flex: 1;
     margin-left: 10px;
-    width: 50%;
-    overflow-x: auto;
+    overflow: auto;
 }
 
 .tip {
@@ -129,15 +127,12 @@ body {
 
 #middle {
     border-left: 1px dashed;
-    position: fixed;
-    left: 49vw;
-    height: 100%;
-    top: -25px;
+    width: 0px;
 }
 
 #gotoTop {
     position: fixed;
-    bottom: 3vh;
+    bottom: 0;
     width: 40px;
     display: none;
     -moz-user-select: none;

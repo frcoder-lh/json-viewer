@@ -27,9 +27,12 @@ $('#in').blur(function () {
 
 $('#in').bind('input propertychange', function () {
     $(".tip").hide();
-    $.fn.zTree.init($("#out"), setting, getOutJson());
-    tree = $.fn.zTree.getZTreeObj("out");
-    $('#expandAll').click();
+    setTimeout(function () {
+        $.fn.zTree.init($("#out"), setting, getOutJson());
+        tree = $.fn.zTree.getZTreeObj("out");
+        $('#expandAll').click();
+        $(window).resize();
+    });
 });
 
 $('#format').bind('click', function () {
@@ -240,56 +243,40 @@ function htmlDecode(value) {
     }
 
     var lastKeyword = "";
-    $("#fuzzySearch").bind("input propertychange", function () {
+    $("#fuzzySearch").bind("input propertychange", debounce(function () {
         if (!tree) return;
-        var _keywords = $(this).val();
-        if (lastKeyword === _keywords) {
-            return;
-        }
+        var _keywords = $("#fuzzySearch").val();
+        if (lastKeyword === _keywords) return;
+        ztreeFilter(tree, _keywords);
         lastKeyword = _keywords;
-        searchNodeLazy(_keywords);
-    });
-
-    var timeoutId = null;
-
-    function searchNodeLazy(_keywords) {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(function () {
-            ztreeFilter(tree, _keywords);
-        }, 500);
-    }
-})();
-
-(function gotoTop() {
-
-    $("#gotoTop").click(function () {
-        $('html,body').animate({scrollTop: '0px'}, 'normal');
-    });
-
-    function showGotoTop() {
-        var s = $(window).scrollTop();
-        if (s > 50) {
-            $("#gotoTop").fadeIn(500);
-        } else {
-            $("#gotoTop").fadeOut(500);
-        }
-        ;
-    }
-
-    $(window).scroll(showGotoTop);
-    $("#container").resize(showGotoTop);
-    $(window).resize(function () {
-        $("#gotoTop").offset({left: $("#middle").offset().left - 19.5});
-        showGotoTop();
-    });
-    $(window).resize();
+        $(window).resize();
+    }, 500));
 
 })();
+
+
+$("#gotoTop").click(function () {
+    $('html,body').animate({scrollTop: '0px'}, 'normal');
+});
+
+function showGotoTop() {
+    $("#container").css('min-height', $(window).height() - 40);
+    $("#gotoTop").offset({left: $("#middle").offset().left - 19.5});
+    var s = $(window).scrollTop();
+    if (s > 50) {
+        $("#gotoTop").fadeIn(500);
+    } else {
+        $("#gotoTop").fadeOut(500);
+    }
+}
+
+$(window).scroll(showGotoTop);
+$("#container").resize(showGotoTop);
+$(window).resize(showGotoTop);
+$(window).resize();
 
 function zTreeOnRightClick(event, treeId, treeNode) {
-    if (treeNode.isParent) return;
+    if (!treeNode || treeNode.isParent) return;
     $("#modalTitle").html(treeNode.getPath().map(a => a.originalKey).join(" > "));
     $("#modalContent").html(treeNode.originalValue);
     $("#detailModal").css('display', 'flex');
@@ -315,5 +302,32 @@ function selectText(element) {
         range.selectNodeContents(text);
         selection.removeAllRanges();
         selection.addRange(range);
+    }
+}
+
+function debounce(fn, wait = 100) {
+    var timeout = null;
+    return function () {
+        if (timeout !== null)
+            clearTimeout(timeout);
+        timeout = setTimeout(fn, wait);
+    }
+}
+
+function throttle(func, delay = 100) {
+    var timer = null;
+    var startTime = Date.now();
+    return function () {
+        var curTime = Date.now();
+        var remaining = delay - (curTime - startTime);
+        var context = this;
+        var args = arguments;
+        clearTimeout(timer);
+        if (remaining <= 0) {
+            func.apply(context, args);
+            startTime = Date.now();
+        } else {
+            timer = setTimeout(func, remaining);
+        }
     }
 }
