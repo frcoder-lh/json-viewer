@@ -109,26 +109,44 @@ function switchEncode() {
 function getInJson() {
     let zNodes;
     var text = $('#in').text();
-    text = text.replace(/(^[\s'"]*)|([\s'"]*$)/g, "");
-    try {
-        try {
-            try {
-                try {
-                    zNodes = eval(text);
+    text = text.replace(/(^[^\[{]*)|([^\]}]*$)/g, "");
 
-                } catch (e) {
-                    zNodes = eval(eval('"' + text + '"'))
-                }
-            } catch (e) {
-                zNodes = JSON.parse(text)
-            }
-        } catch (e) {
-            zNodes = JSON.parse(text.replaceAll("\\\"", "\""));
-        }
-    } catch (e) {
-        console.warn("JSON格式错误");
+    console.info("JSON格式转换：简单解析");
+    zNodes = str2json(text);
+
+    if (zNodes == null) {
+        console.info("JSON格式转换：尝试去转义");
+        text = text.replaceAll("\\\"", "\"");
+        zNodes = str2json(text);
     }
+
+    if (zNodes == null) {
+        console.info("JSON格式转换：尝试解析为数组");
+        if (text[0] != '[') text = "[" + text;
+        if (text[text.length - 1] != ']') text = text + "]";
+        zNodes = str2json(text);
+    }
+
     return zNodes;
+}
+
+function str2json(text) {
+    try {
+        return eval(text);
+    } catch (e) {
+        console.debug("JSON格式错误：1", e);
+    }
+    try {
+        return eval(eval('"' + text + '"'))
+    } catch (e) {
+        console.debug("JSON格式错误：2", e);
+    }
+    try {
+        return JSON.parse(text)
+    } catch (e) {
+        console.debug("JSON格式错误：3", e);
+    }
+    return null;
 }
 
 function parseJson(inJson, outJson) {
