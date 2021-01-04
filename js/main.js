@@ -113,12 +113,17 @@ function getInJson() {
     try {
         try {
             try {
-                zNodes = eval(text);
+                try {
+                    zNodes = eval(text);
+
+                } catch (e) {
+                    zNodes = eval(eval('"' + text + '"'))
+                }
             } catch (e) {
-                zNodes = eval(eval('"' + text + '"'))
+                zNodes = JSON.parse(text)
             }
         } catch (e) {
-            zNodes = JSON.parse($('#in').text())
+            zNodes = JSON.parse(text.replaceAll("\\\"", "\""));
         }
     } catch (e) {
         console.warn("JSON格式错误");
